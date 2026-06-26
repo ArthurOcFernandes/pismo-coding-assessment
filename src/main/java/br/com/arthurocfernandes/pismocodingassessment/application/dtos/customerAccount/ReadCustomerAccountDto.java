@@ -1,4 +1,4 @@
-package br.com.arthurocfernandes.pismocodingassessment.application.dtos.customer;
+package br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount;
 
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
 

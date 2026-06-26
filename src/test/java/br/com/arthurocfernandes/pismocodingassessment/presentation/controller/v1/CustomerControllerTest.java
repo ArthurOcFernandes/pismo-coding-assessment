@@ -1,7 +1,7 @@
 package br.com.arthurocfernandes.pismocodingassessment.presentation.controller.v1;
 
-import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customer.CreateCustomerAccountDto;
-import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customer.ReadCustomerAccountDto;
+import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.CreateCustomerAccountDto;
+import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadCustomerAccountDto;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.OperationError;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
 import br.com.arthurocfernandes.pismocodingassessment.application.service.CustomerAccountService;

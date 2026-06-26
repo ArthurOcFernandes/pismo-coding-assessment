@@ -1,7 +1,6 @@
 package br.com.arthurocfernandes.pismocodingassessment.presentation.controller.v1;
 
-import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customer.CreateCustomerAccountDto;
-import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
+import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.CreateCustomerAccountDto;
 import br.com.arthurocfernandes.pismocodingassessment.presentation.dtos.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
