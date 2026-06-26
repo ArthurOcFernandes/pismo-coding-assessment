@@ -3,7 +3,7 @@ package br.com.arthurocfernandes.pismocodingassessment.application.service.impl;
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customer.ReadCustomerAccountDto;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
-import br.com.arthurocfernandes.pismocodingassessment.infrastructure.config.repositories.CustomerRepository;
+import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.CustomerRepository;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Proxy;

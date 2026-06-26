@@ -1,4 +1,4 @@
-package br.com.arthurocfernandes.pismocodingassessment.infrastructure.config.repositories;
+package br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories;
 
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
 import org.springframework.data.jpa.repository.JpaRepository;

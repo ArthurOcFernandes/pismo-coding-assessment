@@ -5,7 +5,7 @@ import br.com.arthurocfernandes.pismocodingassessment.application.service.Custom
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.OperationError;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
-import br.com.arthurocfernandes.pismocodingassessment.infrastructure.config.repositories.CustomerRepository;
+import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.CustomerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
