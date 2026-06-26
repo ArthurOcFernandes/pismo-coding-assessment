@@ -6,22 +6,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.arthurocfernandes.pismocodingassessment.application.service.CustomerAccountService;
+import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
 @Tag(name = "Accounts")
 public class AccountController {
 
-    private final CustomerAccountService customerAccountService;
+    private final AccountService accountService;
 
-    public AccountController(CustomerAccountService customerAccountService) {
-        this.customerAccountService = customerAccountService;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @PostMapping
     public ResponseEntity<?> createAccount(@RequestBody CreateAccountDto createAccountDto) {
-        var result = customerAccountService.createAccount(createAccountDto.documentNumber());
+        var result = accountService.createAccount(createAccountDto.documentNumber());
 
         if (!result.isSuccess()) {
             var error = result.getError();
@@ -33,7 +33,7 @@ public class AccountController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> getAccount(@PathVariable long id){
-        var result = customerAccountService.getAccount(id);
+        var result = accountService.getAccount(id);
 
         if (!result.isSuccess()) {
             var error = result.getError();

@@ -22,13 +22,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerAccountAccountServiceImplTest {
+class AccountServiceImplTest {
 
     @Mock
     private AccountRepository accountRepository;
 
     @InjectMocks
-    private CustomerAccountAccountServiceImpl service;
+    private AccountServiceImpl service;
 
     @Captor
     private ArgumentCaptor<CustomerAccount> customerAccountCaptor;

@@ -4,7 +4,7 @@ import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerA
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadAccountDto;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.OperationError;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
-import br.com.arthurocfernandes.pismocodingassessment.application.service.CustomerAccountService;
+import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,17 +20,17 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerControllerTest {
+class AccountControllerTest {
 
     @Mock
-    private CustomerAccountService customerAccountService;
+    private AccountService accountService;
 
     @InjectMocks
     private AccountController controller;
 
     @Test
     void shouldReturnCreatedWhenServiceSucceeds() {
-        when(customerAccountService.createAccount(anyString()))
+        when(accountService.createAccount(anyString()))
                 .thenReturn(Result.success(new ReadAccountDto("12345678900", 1L)));
 
         ResponseEntity<?> response = controller.createAccount(new CreateAccountDto("12345678900"));
@@ -42,7 +42,7 @@ class CustomerControllerTest {
 
     @Test
     void shouldReturnErrorResponseWhenServiceFails() {
-        when(customerAccountService.createAccount(anyString()))
+        when(accountService.createAccount(anyString()))
                 .thenReturn(Result.failure(new OperationError(
                         "DOCUMENT_NUMBER_REQUIRED",
                         "documentNumber must be provided",

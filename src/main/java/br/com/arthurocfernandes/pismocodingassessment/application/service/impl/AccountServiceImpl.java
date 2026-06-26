@@ -1,7 +1,7 @@
 package br.com.arthurocfernandes.pismocodingassessment.application.service.impl;
 
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadAccountDto;
-import br.com.arthurocfernandes.pismocodingassessment.application.service.CustomerAccountService;
+import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.OperationError;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CustomerAccountAccountServiceImpl implements CustomerAccountService {
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
-    public CustomerAccountAccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
