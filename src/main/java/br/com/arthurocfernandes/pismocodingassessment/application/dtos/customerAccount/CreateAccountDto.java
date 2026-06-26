@@ -1,3 +1,3 @@
 package br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount;
 
-public record CreateCustomerAccountDto(String documentNumber){}
+public record CreateAccountDto(String documentNumber){}

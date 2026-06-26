@@ -1,47 +1,59 @@
 package br.com.arthurocfernandes.pismocodingassessment.presentation.controller.v1;
 
-import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.CreateCustomerAccountDto;
-import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadCustomerAccountDto;
+import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.CreateAccountDto;
+import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadAccountDto;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.OperationError;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
 import br.com.arthurocfernandes.pismocodingassessment.application.service.CustomerAccountService;
-import br.com.arthurocfernandes.pismocodingassessment.presentation.dtos.ApiErrorResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class CustomerControllerTest {
+
+    @Mock
+    private CustomerAccountService customerAccountService;
+
+    @InjectMocks
+    private AccountController controller;
 
     @Test
     void shouldReturnCreatedWhenServiceSucceeds() {
-        CustomerAccountService service = documentNumber -> Result.success(new ReadCustomerAccountDto(documentNumber, 1L));
-        var controller = new CustomerController(service);
+        when(customerAccountService.createAccount(anyString()))
+                .thenReturn(Result.success(new ReadAccountDto("12345678900", 1L)));
 
-        ResponseEntity<?> response = controller.createCustomer(new CreateCustomerAccountDto("12345678900"));
+        ResponseEntity<?> response = controller.createAccount(new CreateAccountDto("12345678900"));
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertInstanceOf(ReadCustomerAccountDto.class, response.getBody());
-        assertEquals("12345678900", ((ReadCustomerAccountDto) response.getBody()).documentNumber());
+        assertInstanceOf(ReadAccountDto.class, response.getBody());
+        assertEquals("12345678900", ((ReadAccountDto) response.getBody()).documentNumber());
     }
 
     @Test
     void shouldReturnErrorResponseWhenServiceFails() {
-        CustomerAccountService service = documentNumber -> Result.failure(new OperationError(
-                "DOCUMENT_NUMBER_REQUIRED",
-                "documentNumber must be provided",
-                HttpStatus.BAD_REQUEST
-        ));
-        var controller = new CustomerController(service);
+        when(customerAccountService.createAccount(anyString()))
+                .thenReturn(Result.failure(new OperationError(
+                        "DOCUMENT_NUMBER_REQUIRED",
+                        "documentNumber must be provided",
+                        HttpStatus.BAD_REQUEST
+                )));
 
-        ResponseEntity<?> response = controller.createCustomer(new CreateCustomerAccountDto(""));
+        ResponseEntity<?> response = controller.createAccount(new CreateAccountDto(""));
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertInstanceOf(ApiErrorResponse.class, response.getBody());
-        assertTrue(((ApiErrorResponse) response.getBody()).message().contains("documentNumber"));
+        assertInstanceOf(OperationError.class, response.getBody());
+        assertTrue(((OperationError) response.getBody()).message().contains("documentNumber"));
     }
 }
 
