@@ -1,13 +1,12 @@
 package br.com.arthurocfernandes.pismocodingassessment.application.service.impl;
 
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadAccountDto;
-import br.com.arthurocfernandes.pismocodingassessment.application.result.OperationError;
-import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
 import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
-import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
+import br.com.arthurocfernandes.pismocodingassessment.domain.entities.Account;
+import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
+import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.DocumentNumberRequiredException;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,41 +16,28 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
-
     @Override
     @Transactional
-    public Result<ReadAccountDto> createAccount(String documentNumber) {
+    public ReadAccountDto createAccount(String documentNumber) {
         if (documentNumber == null || documentNumber.trim().isEmpty()) {
-            return Result.failure(new OperationError(
-                    "DOCUMENT_NUMBER_REQUIRED",
-                    "documentNumber must be provided",
-                    HttpStatus.UNPROCESSABLE_CONTENT
-            ));
+            throw new DocumentNumberRequiredException();
         }
 
         var normalizedDocumentNumber = documentNumber.trim();
 
         return accountRepository.findByDocumentNumber(normalizedDocumentNumber)
-                .map(existing -> Result.success(new ReadAccountDto(existing)))
+                .map(ReadAccountDto::new)
                 .orElseGet(() -> {
-                    CustomerAccount account = new CustomerAccount();
+                    Account account = new Account();
                     account.setDocumentNumber(normalizedDocumentNumber);
-
-                    return Result.success(new ReadAccountDto(accountRepository.save(account)));
+                    return new ReadAccountDto(accountRepository.save(account));
                 });
     }
 
     @Override
-    public Result<ReadAccountDto> getAccount(long accountId) {
-        var account = accountRepository.findById(accountId);
-
-        return account
-                .map(customerAccount -> Result.success(new ReadAccountDto(customerAccount)))
-                .orElseGet(() -> Result.failure(
-                        new OperationError(
-                                "RESOURCE_NOT_FOUND",
-                                String.format("Account with id %d not found", accountId),
-                                HttpStatus.NOT_FOUND
-                        )));
+    public ReadAccountDto getAccount(long accountId) {
+        return accountRepository.findById(accountId)
+                .map(ReadAccountDto::new)
+                .orElseThrow(AccountNotFoundException::new);
     }
 }

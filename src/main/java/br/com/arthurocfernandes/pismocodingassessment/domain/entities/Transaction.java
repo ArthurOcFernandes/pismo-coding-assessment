@@ -32,7 +32,7 @@ public class Transaction {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "account_id", nullable = false)
-	private CustomerAccount account;
+	private Account account;
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "operation_type", nullable = false)

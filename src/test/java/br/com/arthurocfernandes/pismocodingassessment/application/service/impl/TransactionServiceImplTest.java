@@ -1,18 +1,19 @@
 package br.com.arthurocfernandes.pismocodingassessment.application.service.impl;
 
+import br.com.arthurocfernandes.pismocodingassessment.application.dtos.transaction.CreateTransactionDto;
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.transaction.ReadTransactionDto;
-import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
+import br.com.arthurocfernandes.pismocodingassessment.domain.entities.Account;
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.Transaction;
 import br.com.arthurocfernandes.pismocodingassessment.domain.enums.OperationType;
+import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
+import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.InvalidOperationTypeException;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.AccountRepository;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.TransactionRepository;
-import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,49 +35,46 @@ public class TransactionServiceImplTest {
     private TransactionServiceImpl transactionServiceImpl;
 
     @Test
-    void shouldFailWhenAccountDoesNotExist() {
+    void shouldThrowAccountNotFoundExceptionWhenAccountDoesNotExist() {
         when(accountRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
-        Result<?> result = transactionServiceImpl.CreateTransaction(1L, 1, new BigDecimal(1000));
+        assertThrows(AccountNotFoundException.class, () ->
+                transactionServiceImpl.CreateTransaction(
+                        new CreateTransactionDto(1L, 1, new BigDecimal(1000))));
 
-        assertFalse(result.isSuccess());
-        assertEquals("ACCOUNT_NOT_FOUND", result.getError().code());
-        assertEquals("A valid account must be provided", result.getError().message());
-        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, result.getError().status());
         verify(accountRepository, times(1)).findById(1L);
         verify(transactionRepository, never()).save(any());
     }
 
     @Test
-    void shouldFailWhenInvalidOperationId() {
-        when(accountRepository.findById(any(Long.class))).thenReturn(Optional.of(new CustomerAccount()));
+    void shouldThrowInvalidOperationTypeExceptionWhenInvalidOperationId() {
+        when(accountRepository.findById(any(Long.class))).thenReturn(Optional.of(new Account()));
 
-        Result<?> result = transactionServiceImpl.CreateTransaction(1L, -99, new BigDecimal(1000));
+        assertThrows(InvalidOperationTypeException.class, () ->
+                transactionServiceImpl.CreateTransaction(
+                        new CreateTransactionDto(1L, -99, new BigDecimal(1000))));
 
-        assertFalse(result.isSuccess());
-        assertEquals("INVALID_OPERATION_TYPE", result.getError().code());
-        assertEquals("A valid operation must be provided", result.getError().message());
-        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, result.getError().status());
         verify(accountRepository, times(1)).findById(1L);
         verify(transactionRepository, never()).save(any());
     }
 
     @Test
-    void shouldSucceedWhenValidInput() {
+    void shouldReturnReadTransactionDtoWhenValidInput() {
         var transaction = new Transaction(
                 1L,
-                new CustomerAccount(1L, "1234", LocalDateTime.now()),
+                new Account(1L, "1234", LocalDateTime.now()),
                 OperationType.PURCHASE,
                 new BigDecimal(1000),
                 LocalDateTime.now());
 
-        when(accountRepository.findById(any(Long.class))).thenReturn(Optional.of(new CustomerAccount()));
+        when(accountRepository.findById(any(Long.class))).thenReturn(Optional.of(new Account()));
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
-        Result<?> result = transactionServiceImpl.CreateTransaction(1L, OperationType.PURCHASE.getValue(), new BigDecimal(1000));
+        ReadTransactionDto result = transactionServiceImpl.CreateTransaction(
+                new CreateTransactionDto(1L, OperationType.PURCHASE.getValue(), new BigDecimal(1000)));
 
-        assertTrue(result.isSuccess());
-        assertEquals(result.getValue(), new ReadTransactionDto(transaction));
+        assertNotNull(result);
+        assertEquals(new ReadTransactionDto(transaction), result);
         verify(accountRepository, times(1)).findById(1L);
         verify(transactionRepository, times(1)).save(any());
     }
