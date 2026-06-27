@@ -1,23 +1,22 @@
 package br.com.arthurocfernandes.pismocodingassessment.application.service.impl;
 
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadAccountDto;
-import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
-import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.OperationError;
 import br.com.arthurocfernandes.pismocodingassessment.application.result.Result;
+import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
+import br.com.arthurocfernandes.pismocodingassessment.domain.entities.CustomerAccount;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.AccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
 
     @Override
     @Transactional

@@ -1,23 +1,21 @@
 package br.com.arthurocfernandes.pismocodingassessment.presentation.controller.v1;
 
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.CreateAccountDto;
+import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
-
 @RestController
 @RequestMapping("/api/v1/accounts")
 @Tag(name = "Accounts")
+@RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     @PostMapping
     public ResponseEntity<?> createAccount(@RequestBody CreateAccountDto createAccountDto) {

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -18,6 +19,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,48 +43,5 @@ public class Transaction {
 
 	@Column(name = "created_at", nullable = false, updatable = false)
 	@CreationTimestamp
-	private LocalDateTime eventDate;
-
-	public Transaction() {
-	}
-
-	public Long getTransactionId() {
-		return transactionId;
-	}
-
-	public void setTransactionId(Long transactionId) {
-		this.transactionId = transactionId;
-	}
-
-	public CustomerAccount getAccount() {
-		return account;
-	}
-
-	public void setAccount(CustomerAccount account) {
-		this.account = account;
-	}
-
-	public OperationType getOperationType() {
-		return operationType;
-	}
-
-	public void setOperationType(OperationType operationType) {
-		this.operationType = operationType;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return eventDate;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.eventDate = createdAt;
-	}
+	private LocalDateTime createdAt;
 }
