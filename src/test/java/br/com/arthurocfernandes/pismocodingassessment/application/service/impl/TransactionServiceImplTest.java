@@ -6,6 +6,7 @@ import br.com.arthurocfernandes.pismocodingassessment.domain.entities.Account;
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.Transaction;
 import br.com.arthurocfernandes.pismocodingassessment.domain.enums.OperationType;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
+import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.InvalidOperationException;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.InvalidOperationTypeException;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.AccountRepository;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.TransactionRepository;
@@ -64,18 +65,30 @@ public class TransactionServiceImplTest {
                 1L,
                 new Account(1L, "1234", LocalDateTime.now()),
                 OperationType.PURCHASE,
-                new BigDecimal(1000),
+                BigDecimal.valueOf(-1000),
                 LocalDateTime.now());
 
         when(accountRepository.findById(any(Long.class))).thenReturn(Optional.of(new Account()));
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
         ReadTransactionDto result = transactionServiceImpl.CreateTransaction(
-                new CreateTransactionDto(1L, OperationType.PURCHASE.getValue(), new BigDecimal(1000)));
+                new CreateTransactionDto(1L, OperationType.PURCHASE.getValue(), BigDecimal.valueOf(-1000)));
 
         assertNotNull(result);
         assertEquals(new ReadTransactionDto(transaction), result);
         verify(accountRepository, times(1)).findById(1L);
         verify(transactionRepository, times(1)).save(any());
+    }
+
+    @Test
+    void shouldThrowInvalidOperationExceptionWhenInvalidAmountPerOperation() {
+        when(accountRepository.findById(any(Long.class))).thenReturn(Optional.of(new Account()));
+
+        assertThrows(InvalidOperationException.class, () ->
+            transactionServiceImpl.CreateTransaction(new CreateTransactionDto(1L, 1, new BigDecimal(1000)))
+        );
+
+        verify(accountRepository, times(1)).findById(1L);
+        verify(transactionRepository, never()).save(any());
     }
 }
