@@ -15,39 +15,19 @@ services:
       retries: 20
       start_period: 20s
 
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
-
   app:
-    image: maven:3.8.8-openjdk-17
-    entrypoint: ["mvn"]
-    working_dir: /workspace
-    volumes:
-      - ./:/workspace
-      - m2-repo:/root/.m2
+    build: .
+    ports:
+      - "8080:8080"
     environment:
       MARIADB_HOST: ${MARIADB_HOST}
       MARIADB_PORT: ${MARIADB_PORT}
       MARIADB_DATABASE: ${MARIADB_DATABASE}
       MARIADB_USER: ${MARIADB_USER}
       MARIADB_PASSWORD: ${MARIADB_PASSWORD}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-    ports:
-      - "8080:8080"
     depends_on:
       mariadb:
         condition: service_healthy
-      redis:
-        condition: service_healthy
-    command: ["-DskipTests", "spring-boot:run"]
 
 volumes:
   m2-repo:
