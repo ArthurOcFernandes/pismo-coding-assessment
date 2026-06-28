@@ -1,7 +1,6 @@
 package br.com.arthurocfernandes.pismocodingassessment.presentation.exceptionhandler;
 
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
-import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.DocumentNumberRequiredException;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.InvalidOperationException;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.InvalidOperationTypeException;
 import org.junit.jupiter.api.Test;
@@ -31,22 +30,6 @@ public class GlobalExceptionHandlerTest {
         assert body != null;
         assertEquals("ACCOUNT_NOT_FOUND", body.code());
         assertEquals("A valid account must be provided", body.message());
-    }
-
-    @Test
-    void shouldHandlerDocumentNumberRequiredException(){
-        DocumentNumberRequiredException exception = new DocumentNumberRequiredException();
-
-        ResponseEntity<ErrorResponse> response =
-                handler.handleDomainException(exception);
-
-        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, response.getStatusCode());
-
-        ErrorResponse body = response.getBody();
-
-        assert body != null;
-        assertEquals("DOCUMENT_NUMBER_REQUIRED", body.code());
-        assertEquals("Document number must be provided", body.message());
     }
 
     @Test

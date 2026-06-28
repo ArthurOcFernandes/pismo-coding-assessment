@@ -4,7 +4,6 @@ import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerA
 import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.Account;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
-import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.DocumentNumberRequiredException;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public ReadAccountDto createAccount(String documentNumber) {
-        if (documentNumber == null || documentNumber.trim().isEmpty()) {
-            throw new DocumentNumberRequiredException();
-        }
-
         var normalizedDocumentNumber = documentNumber.trim();
 
         return accountRepository.findByDocumentNumber(normalizedDocumentNumber)

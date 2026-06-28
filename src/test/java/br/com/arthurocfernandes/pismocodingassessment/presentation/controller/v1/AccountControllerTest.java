@@ -4,7 +4,6 @@ import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerA
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadAccountDto;
 import br.com.arthurocfernandes.pismocodingassessment.application.service.AccountService;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
-import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.DocumentNumberRequiredException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,14 +36,6 @@ class AccountControllerTest {
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(expectedDto, response.getBody());
-    }
-
-    @Test
-    void shouldThrowDocumentNumberRequiredExceptionWhenCreateAccountFails() {
-        when(accountService.createAccount(anyString())).thenThrow(new DocumentNumberRequiredException());
-
-        assertThrows(DocumentNumberRequiredException.class, () ->
-                controller.createAccount(new CreateAccountDto("")));
     }
 
     @Test

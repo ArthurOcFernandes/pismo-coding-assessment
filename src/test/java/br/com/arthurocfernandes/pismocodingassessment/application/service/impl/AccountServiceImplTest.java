@@ -3,7 +3,6 @@ package br.com.arthurocfernandes.pismocodingassessment.application.service.impl;
 import br.com.arthurocfernandes.pismocodingassessment.application.dtos.customerAccount.ReadAccountDto;
 import br.com.arthurocfernandes.pismocodingassessment.domain.entities.Account;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
-import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.DocumentNumberRequiredException;
 import br.com.arthurocfernandes.pismocodingassessment.infrastructure.repositories.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,14 +29,6 @@ class AccountServiceImplTest {
 
     @Captor
     private ArgumentCaptor<Account> customerAccountCaptor;
-
-    @Test
-    void shouldThrowDocumentNumberRequiredExceptionWhenDocumentNumberIsMissing() {
-        assertThrows(DocumentNumberRequiredException.class, () -> service.createAccount("   "));
-
-        verify(accountRepository, never()).findByDocumentNumber(any());
-        verify(accountRepository, never()).save(any());
-    }
 
     @Test
     void shouldCreateCustomerWhenDocumentNumberDoesNotExist() {
