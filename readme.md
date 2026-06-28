@@ -9,10 +9,6 @@ REST API built with **Spring Boot 4**, using **MariaDB**, **Flyway**, and **Dock
 - Docker
 - Docker Compose
 
-(Optional for local run)
-- Java 17
-- Maven 3.8+
-
 ---
 
 ## Configuration
