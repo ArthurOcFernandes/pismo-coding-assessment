@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Schema(
@@ -34,6 +35,6 @@ public record CreateTransactionDto(
                 description = "Amount used in operation",
                 example = "1000.10"
         )
-        @NotNull BigDecimal amount
+        @NotNull  @Positive BigDecimal amount
 ) {
 }

@@ -6,41 +6,20 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Getter
 public enum OperationType {
 
-    PURCHASE(1) {
-        @Override
-        public boolean isValid(BigDecimal amount) {
-            return amount.signum() < 0;
-        }
-    },
+    PURCHASE(1, -1),
+    INSTALLMENT_PURCHASE(2, -1),
+    WITHDRAWAL(3, -1),
+    PAYMENT(4, 1);
 
-    INSTALLMENT_PURCHASE(2) {
-        @Override
-        public boolean isValid(BigDecimal amount) {
-            return amount.signum() < 0;
-        }
-    },
-
-    WITHDRAWAL(3) {
-        @Override
-        public boolean isValid(BigDecimal amount) {
-            return amount.signum() < 0;
-        }
-    },
-
-    PAYMENT(4) {
-        @Override
-        public boolean isValid(BigDecimal amount) {
-            return amount.signum() > 0;
-        }
-    };
-
-    @Getter
     private final int value;
+    private final int signal;
 
-    OperationType(int value) {
+    OperationType(int value, int signal) {
         this.value = value;
+        this.signal = signal;
     }
 
     public static Optional<OperationType> fromValue(int value) {
@@ -49,5 +28,7 @@ public enum OperationType {
                 .findFirst();
     }
 
-    public abstract boolean isValid(BigDecimal amount);
+    public BigDecimal applySignal(BigDecimal amount) {
+        return amount.multiply(BigDecimal.valueOf(signal));
+    }
 }

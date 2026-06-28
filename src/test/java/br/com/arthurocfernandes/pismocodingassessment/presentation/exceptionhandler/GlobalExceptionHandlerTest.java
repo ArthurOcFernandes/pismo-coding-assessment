@@ -1,7 +1,6 @@
 package br.com.arthurocfernandes.pismocodingassessment.presentation.exceptionhandler;
 
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.AccountNotFoundException;
-import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.InvalidOperationException;
 import br.com.arthurocfernandes.pismocodingassessment.domain.exceptions.InvalidOperationTypeException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,21 +45,5 @@ public class GlobalExceptionHandlerTest {
         assert body != null;
         assertEquals("INVALID_OPERATION_TYPE", body.code());
         assertEquals("A valid operation must be provided", body.message());
-    }
-
-    @Test
-    void shouldHandleInvalidOperationException() {
-        InvalidOperationException exception = new InvalidOperationException();
-
-        ResponseEntity<ErrorResponse> response =
-                handler.handleDomainException(exception);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-
-        ErrorResponse body = response.getBody();
-
-        assert body != null;
-        assertEquals("INVALID_OPERATION", body.code());
-        assertEquals("Invalid amount for operation", body.message());
     }
 }
