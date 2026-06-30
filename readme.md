@@ -91,8 +91,29 @@ mvn -DskipTests spring-boot:run
 
 ---
 
+## Technologies Used
+
+*   **Spring Boot 4**: Framework for building Java applications.
+*   **MariaDB**: Relational database management system.
+*   **Flyway**: Database versioning tool.
+*   **Docker**: Platform for developing, shipping, and running applications in containers.
+*   **Docker Compose**: Tool for defining and running multi-container Docker applications.
+*   **Lombok**: Library to reduce boilerplate code in Java.
+*   **Springdoc OpenAPI**: Automatic generation of OpenAPI documentation (Swagger UI).
+*   **Commons Codec**: Library for encoding and decoding data (used for hashing).
+*   **Jackson Databind**: Library for JSON serialization/deserialization (integrated via Spring Boot Web MVC).
+
+---
+
+## Suggested Next Steps
+
+*   **Redis Cache Implementation**: Add a caching layer using Redis to improve API performance, especially for frequent queries.
+*   **Transaction Idempotency**: Refine and expand the idempotency implementation to ensure that transaction creation operations are safe against duplicate retries.
+
+---
+
 ## Notes
 
-- Flyway runs migrations automatically on startup
-- Database is provided via Docker
-- Application starts after MariaDB is healthy
+- Flyway runs migrations automatically on startup.
+- The database is provided via Docker.
+- The application starts after MariaDB is healthy.
